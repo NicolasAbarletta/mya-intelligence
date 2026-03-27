@@ -41,7 +41,7 @@ log = logging.getLogger("mya")
 # -- Page config --
 st.set_page_config(
     page_title="MYA Intelligence",
-    page_icon="M",
+    page_icon=":material/check_circle:",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -224,7 +224,7 @@ if st.session_state.pipeline_run:
     st.toast(
         f"Pipeline complete: {signal_count} signals detected"
         + (f" ({critical} CRITICAL)" if critical else ""),
-        icon="M",
+        icon=":material/check_circle:",
     )
 
 # -- Synthesis execution --
@@ -250,9 +250,9 @@ if st.session_state.get("run_synthesis"):
             )
             st.session_state.synthesis_results = results
 
-        st.toast(f"Synthesis complete: {len(results)} theses analyzed", icon="M")
+        st.toast(f"Synthesis complete: {len(results)} theses analyzed", icon=":material/check_circle:")
     else:
-        st.toast("Run the data pipeline first.", icon="!")
+        st.toast("Run the data pipeline first.", icon=":material/warning:")
 
 # -- Daily briefing execution --
 if st.session_state.get("run_briefing"):
@@ -272,11 +272,11 @@ if st.session_state.get("run_briefing"):
                 snapshots, regime, vol_surface, synthesis, engine, run_id
             )
         if briefing:
-            st.toast("Daily briefing generated.", icon="M")
+            st.toast("Daily briefing generated.", icon=":material/check_circle:")
         else:
-            st.toast("Briefing generation failed. Check API key.", icon="!")
+            st.toast("Briefing generation failed. Check API key.", icon=":material/warning:")
     else:
-        st.toast("Run the data pipeline first.", icon="!")
+        st.toast("Run the data pipeline first.", icon=":material/warning:")
 
 
 # -- Main content (home page) --
