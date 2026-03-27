@@ -25,6 +25,8 @@ from src.analysis.thesis_engine import ThesisEngine
 from src.analysis.signal_detector import SignalDetector
 from src.analysis.macro_monitor import classify_regime
 from src.analysis.vol_surface import compute_vol_surface
+from src.synthesis.alert_generator import synthesize_all
+from src.synthesis.daily_briefing import generate_daily_briefing
 from src.utils.helpers import load_theses, staleness_label, severity_color
 
 # -- Logging --
@@ -112,6 +114,10 @@ if "thesis_snapshots" not in st.session_state:
     st.session_state.thesis_snapshots = {}
 if "vol_surface" not in st.session_state:
     st.session_state.vol_surface = None
+if "synthesis_results" not in st.session_state:
+    st.session_state.synthesis_results = {}
+if "last_run_id" not in st.session_state:
+    st.session_state.last_run_id = None
 
 dm: DataManager = st.session_state.data_manager
 
@@ -135,6 +141,19 @@ with st.sidebar:
     with col2:
         if st.button("Market Only", use_container_width=True):
             st.session_state.pipeline_run = "market_only"
+
+    # Synthesis controls
+    st.divider()
+    st.markdown("**Claude Synthesis**")
+    syn_col1, syn_col2 = st.columns(2)
+    with syn_col1:
+        if st.button("Synthesize", use_container_width=True,
+                      disabled=not dm.market_data):
+            st.session_state.run_synthesis = True
+    with syn_col2:
+        if st.button("Briefing", use_container_width=True,
+                      disabled=not dm.market_data):
+            st.session_state.run_briefing = True
 
     # Freshness indicators
     st.divider()
@@ -197,6 +216,8 @@ if st.session_state.pipeline_run:
         vol_surface = compute_vol_surface(dm.market_data)
         st.session_state.vol_surface = vol_surface
 
+    st.session_state.last_run_id = run_id
+
     signal_count = len(signals)
     critical = sum(1 for s in signals if s.get("severity") == "critical")
     st.toast(
@@ -204,6 +225,57 @@ if st.session_state.pipeline_run:
         + (f" ({critical} CRITICAL)" if critical else ""),
         icon="M",
     )
+
+# -- Synthesis execution --
+if st.session_state.get("run_synthesis"):
+    st.session_state.run_synthesis = False
+    snapshots = st.session_state.thesis_snapshots
+    regime = st.session_state.regime
+    run_id = st.session_state.last_run_id or "manual"
+
+    if snapshots:
+        with st.spinner("Running Claude synthesis across all theses..."):
+            engine = ThesisEngine(
+                dm.market_data, dm.fred_data, dm.news_data, dm.news
+            )
+            # Group signals by thesis
+            signals_by_thesis = {}
+            for s in st.session_state.signals:
+                tid = s.get("thesis", "unknown")
+                signals_by_thesis.setdefault(tid, []).append(s)
+
+            results = synthesize_all(
+                snapshots, signals_by_thesis, regime, engine, run_id
+            )
+            st.session_state.synthesis_results = results
+
+        st.toast(f"Synthesis complete: {len(results)} theses analyzed", icon="M")
+    else:
+        st.toast("Run the data pipeline first.", icon="!")
+
+# -- Daily briefing execution --
+if st.session_state.get("run_briefing"):
+    st.session_state.run_briefing = False
+    snapshots = st.session_state.thesis_snapshots
+    regime = st.session_state.regime
+    vol_surface = st.session_state.vol_surface
+    synthesis = st.session_state.synthesis_results
+    run_id = st.session_state.last_run_id or "manual"
+
+    if snapshots:
+        with st.spinner("Generating daily briefing..."):
+            engine = ThesisEngine(
+                dm.market_data, dm.fred_data, dm.news_data, dm.news
+            )
+            briefing = generate_daily_briefing(
+                snapshots, regime, vol_surface, synthesis, engine, run_id
+            )
+        if briefing:
+            st.toast("Daily briefing generated.", icon="M")
+        else:
+            st.toast("Briefing generation failed. Check API key.", icon="!")
+    else:
+        st.toast("Run the data pipeline first.", icon="!")
 
 
 # -- Main content (home page) --
@@ -297,6 +369,23 @@ for tid, t in theses.items():
                         )
                     else:
                         st.metric(ind.get("label", ticker), "N/A")
+
+        # Synthesis result
+        synth = st.session_state.synthesis_results.get(tid)
+        if synth:
+            strength = synth.get("signal_strength", 0)
+            delta = synth.get("conviction_delta", "0")
+            delta_color = "#00CC66" if delta.startswith("+") else "#FF4444" if delta.startswith("-") else "#888"
+            st.markdown(
+                f'<div style="background:#1A1D23;border:1px solid #2A2D35;'
+                f'border-radius:6px;padding:10px 14px;margin-top:8px">'
+                f'<strong style="color:#4A9EFF">Claude Synthesis</strong> '
+                f'<span style="color:#888">| Strength: {strength:.0%}</span> '
+                f'<span style="color:{delta_color};font-weight:600">Conviction: {delta}</span><br>'
+                f'<span style="color:#ccc;font-size:0.85rem">{synth.get("summary", "")}</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
 
         # News count for this thesis
         thesis_news = dm.get_thesis_news(tid)
