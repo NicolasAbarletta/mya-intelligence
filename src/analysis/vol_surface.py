@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Volatility & Options Analytics for MYA Intelligence.
 
 Computes IV vs RV analysis, vol regime, term structure signals,

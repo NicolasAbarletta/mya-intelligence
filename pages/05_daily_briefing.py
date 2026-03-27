@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Page 5: Daily Briefing.
 
 Claude-generated end-of-day intelligence summary.

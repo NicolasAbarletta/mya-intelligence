@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """FRED API client for MYA Intelligence.
 
 Fetches economic indicator series from the St. Louis Fed FRED API.

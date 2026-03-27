@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Thesis Engine for MYA Intelligence.
 
 The brain of the system. Maps incoming raw data (market, FRED, news)

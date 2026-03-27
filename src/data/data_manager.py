@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Data orchestrator for MYA Intelligence.
 
 Coordinates all data fetches, stores results in SQLite,

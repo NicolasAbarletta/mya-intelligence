@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Claude-powered alert synthesis for MYA Intelligence.
 
 Layer 2 of signal detection: takes accumulated rule-based signals

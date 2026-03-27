@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Macro Regime Monitor for MYA Intelligence.
 
 Classifies the current macro environment into regimes based on

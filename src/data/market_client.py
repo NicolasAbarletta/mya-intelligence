@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Market data client using yfinance for MYA Intelligence.
 
 Fetches prices, options chains, derived metrics, and vol data.

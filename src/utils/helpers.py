@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Shared utilities for MYA Intelligence."""
 
 import yaml

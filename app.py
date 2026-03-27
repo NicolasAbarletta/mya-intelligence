@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """MYA Capital -- Market Intelligence & Signal Aggregation Agent.
 
 Main Streamlit application entry point.

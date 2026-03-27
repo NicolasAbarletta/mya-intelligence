@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Signal Detector for MYA Intelligence.
 
 Layer 1: Rule-based trigger evaluation against thesis-defined thresholds.

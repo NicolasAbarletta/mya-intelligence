@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """News aggregation client for MYA Intelligence.
 
 Uses NewsAPI to fetch articles by keyword clusters tied to theses.

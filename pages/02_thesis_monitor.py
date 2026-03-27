@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Page 2: Thesis Monitor.
 
 Core page -- one card per thesis with indicators, signals, news,

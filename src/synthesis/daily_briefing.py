@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Daily Briefing Generator for MYA Intelligence.
 
 Produces a Claude-synthesized end-of-day intelligence report that:

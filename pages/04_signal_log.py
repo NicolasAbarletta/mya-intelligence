@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Page 4: Signal Log.
 
 Chronological log of detected signals, filterable by thesis/severity/date.

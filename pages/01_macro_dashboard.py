@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 """Page 1: Macro Dashboard.
 
 Real-time macro regime indicator, key FRED charts, DXY/rates/commodities strip.
