@@ -1,0 +1,38 @@
+# MYA Capital -- Alert Configuration
+
+severity_levels:
+  critical:
+    description: "Immediate -- thesis-breaking or position-impacting"
+    channels: [streamlit_banner, log]
+    color: "#FF4444"
+  high:
+    description: "Same-day attention needed"
+    channels: [streamlit_sidebar, log]
+    color: "#FF8C00"
+  medium:
+    description: "Track over next few days"
+    channels: [log]
+    color: "#FFD700"
+  low:
+    description: "Background monitoring"
+    channels: [log]
+    color: "#888888"
+
+rules:
+  - name: position_impact
+    condition: "signal affects a live options position"
+    severity: critical
+  - name: thesis_shift
+    condition: "conviction_delta absolute value > 0.2"
+    severity: high
+  - name: macro_regime_change
+    condition: "macro regime classification changes"
+    severity: critical
+  - name: news_cluster
+    condition: "3+ related articles in 24h for any thesis"
+    severity: medium
+
+refresh_intervals:
+  market_data_minutes: 30
+  news_hours: 6
+  synthesis_hours: 6

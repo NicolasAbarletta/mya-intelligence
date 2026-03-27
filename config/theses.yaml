@@ -1,0 +1,240 @@
+# MYA Capital -- Active Thesis Frameworks
+# Add new theses here without touching code.
+
+energy_disruption:
+  name: "Energy / Geopolitical Disruption"
+  core_view: >
+    Strait of Hormuz disruption risk and broader Middle East escalation
+    create asymmetric upside in energy.
+  indicators:
+    market:
+      - ticker: "CL=F"
+        label: "WTI Crude"
+        metrics: [price, momentum_5d, term_structure]
+      - ticker: "BZ=F"
+        label: "Brent Crude"
+        metrics: [price, momentum_5d]
+    fred:
+      - series: DCOILWTICO
+        label: "WTI Spot"
+      - series: T10Y2Y
+        label: "Yield Curve"
+      - series: BAMLH0A0HYM2
+        label: "HY OAS Spread"
+    news_keywords:
+      - "Strait of Hormuz"
+      - "Iran"
+      - "Israel"
+      - "oil supply"
+      - "OPEC"
+      - "sanctions"
+      - "Middle East"
+  positions:
+    - name: "WTI Call Spread"
+      underlying: "CL=F"
+    - name: "OXY Calls"
+      underlying: "OXY"
+  triggers:
+    - condition: "wti_daily_move_pct > 3"
+      severity: high
+      description: "WTI moves >3% in a session"
+    - condition: "hy_spread_weekly_change > 25"
+      severity: high
+      description: "HY spreads widen >25bps in a week"
+    - condition: "news_cluster_24h >= 3"
+      severity: medium
+      description: "3+ relevant news articles in 24 hours"
+    - condition: "backwardation_steepens"
+      severity: medium
+      description: "Backwardation steepens beyond 1-month average"
+
+defense_tech:
+  name: "Defense Tech Displacement"
+  core_view: >
+    Next-gen defense companies (Anduril, Palantir, Shield AI) are structurally
+    displacing legacy defense primes; accelerated by geopolitical environment
+    and AI integration.
+  indicators:
+    market:
+      - ticker: ITA
+        label: "iShares US Aerospace & Defense"
+        metrics: [price, relative_performance]
+      - ticker: XAR
+        label: "SPDR Aerospace & Defense"
+        metrics: [price, relative_performance]
+      - ticker: PPA
+        label: "Invesco Aerospace & Defense"
+        metrics: [price, relative_performance]
+      - ticker: LMT
+        label: "Lockheed Martin"
+        metrics: [price, relative_performance]
+      - ticker: RTX
+        label: "RTX Corp"
+        metrics: [price, relative_performance]
+      - ticker: NOC
+        label: "Northrop Grumman"
+        metrics: [price, relative_performance]
+      - ticker: GD
+        label: "General Dynamics"
+        metrics: [price, relative_performance]
+      - ticker: BA
+        label: "Boeing"
+        metrics: [price, relative_performance]
+      - ticker: PLTR
+        label: "Palantir"
+        metrics: [price, relative_performance]
+    fred:
+      - series: FDEFX
+        label: "Federal Defense Spending"
+    news_keywords:
+      - "Anduril"
+      - "defense contract"
+      - "Pentagon"
+      - "DARPA"
+      - "defense budget"
+      - "autonomous weapons"
+      - "drone"
+      - "Shield AI"
+  positions:
+    - name: "Anduril (via LDL Fund)"
+      type: private
+  triggers:
+    - condition: "contract_award_gt_1b"
+      severity: high
+      description: "Major contract >$1B to non-legacy prime"
+    - condition: "defense_budget_news"
+      severity: medium
+      description: "Defense budget proposal or continuing resolution news"
+    - condition: "anduril_news"
+      severity: high
+      description: "Anduril-specific news (valuation, contracts, IPO)"
+    - condition: "legacy_underperformance_5d > 2"
+      severity: medium
+      description: "Legacy prime underperformance vs. sector >2% over 5 days"
+
+ai_infrastructure:
+  name: "AI Infrastructure Bottleneck"
+  core_view: >
+    Compute demand is outstripping supply; power/data center convergence
+    is the investable bottleneck; infrastructure funds with exposure here
+    are the right vehicle.
+  indicators:
+    market:
+      - ticker: VST
+        label: "Vistra"
+        metrics: [price, momentum_5d]
+      - ticker: CEG
+        label: "Constellation Energy"
+        metrics: [price, momentum_5d]
+      - ticker: NRG
+        label: "NRG Energy"
+        metrics: [price, momentum_5d]
+      - ticker: EQIX
+        label: "Equinix"
+        metrics: [price, momentum_5d]
+      - ticker: DLR
+        label: "Digital Realty"
+        metrics: [price, momentum_5d]
+      - ticker: NVDA
+        label: "NVIDIA"
+        metrics: [price, momentum_5d]
+      - ticker: AMD
+        label: "AMD"
+        metrics: [price, momentum_5d]
+      - ticker: AVGO
+        label: "Broadcom"
+        metrics: [price, momentum_5d]
+    fred:
+      - series: DHHNGSP
+        label: "Henry Hub Natural Gas"
+    news_keywords:
+      - "data center"
+      - "power demand"
+      - "hyperscaler capex"
+      - "AI infrastructure"
+      - "nuclear power"
+      - "energy grid"
+  positions:
+    - name: "Infrastructure allocation gap"
+      type: evaluation
+      notes: "Portfolio is LatAm-heavy, missing digital/power infra. Evaluating ECP, Stonepeak."
+  triggers:
+    - condition: "hyperscaler_capex_announcement"
+      severity: high
+      description: "Hyperscaler capex announcement (MSFT, GOOG, AMZN, META)"
+    - condition: "power_utility_weekly_move > 5"
+      severity: high
+      description: "Power utility breakout >5% in a week"
+    - condition: "grid_constraint_news"
+      severity: medium
+      description: "Grid constraint or permitting news"
+    - condition: "dc_reit_earnings_surprise"
+      severity: medium
+      description: "Data center REIT earnings surprise"
+
+macro_regime:
+  name: "Macro Regime Monitor"
+  core_view: >
+    Monitor for regime shifts that affect all private capital allocations --
+    rate trajectory, credit conditions, liquidity.
+  indicators:
+    market:
+      - ticker: SPY
+        label: "S&P 500"
+        metrics: [price, momentum_5d]
+      - ticker: QQQ
+        label: "Nasdaq 100"
+        metrics: [price, momentum_5d]
+      - ticker: TLT
+        label: "20Y+ Treasury"
+        metrics: [price, momentum_5d]
+      - ticker: GLD
+        label: "Gold"
+        metrics: [price, momentum_5d]
+      - ticker: HYG
+        label: "High Yield Corporate"
+        metrics: [price, momentum_5d]
+      - ticker: LQD
+        label: "Investment Grade Corporate"
+        metrics: [price, momentum_5d]
+      - ticker: "^VIX"
+        label: "VIX"
+        metrics: [price, term_structure]
+      - ticker: UUP
+        label: "Dollar Index ETF"
+        metrics: [price, momentum_5d]
+    fred:
+      - series: DFF
+        label: "Fed Funds Rate"
+      - series: T10Y2Y
+        label: "10Y-2Y Spread"
+      - series: BAMLH0A0HYM2
+        label: "HY OAS"
+      - series: WALCL
+        label: "Fed Balance Sheet"
+      - series: CPIAUCSL
+        label: "CPI"
+      - series: UNRATE
+        label: "Unemployment Rate"
+      - series: UMCSENT
+        label: "Consumer Sentiment"
+  positions: []
+  triggers:
+    - condition: "fed_rate_change"
+      severity: critical
+      description: "Fed Funds rate change or strong forward guidance shift"
+    - condition: "yield_curve_inversion_change"
+      severity: critical
+      description: "Yield curve inversion or disinversion"
+    - condition: "hy_spread_gt_500"
+      severity: critical
+      description: "HY spreads cross 500bps (stress)"
+    - condition: "hy_spread_lt_300"
+      severity: high
+      description: "HY spreads compress below 300bps (complacency)"
+    - condition: "cpi_mom_surprise_gt_03"
+      severity: high
+      description: "CPI print >0.3% MoM surprise"
+    - condition: "consumer_sentiment_drop_gt_5"
+      severity: high
+      description: "Consumer sentiment drops >5pts MoM"

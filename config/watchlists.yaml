@@ -1,0 +1,64 @@
+# MYA Capital -- Watchlists & Positions
+
+equities:
+  energy:
+    - OXY
+    - XOM
+    - CVX
+    - COP
+    - SLB
+  defense:
+    - LMT
+    - RTX
+    - NOC
+    - GD
+    - BA
+    - PLTR
+  defense_etfs:
+    - ITA
+    - XAR
+    - PPA
+  ai_infra:
+    - NVDA
+    - AMD
+    - AVGO
+    - VST
+    - CEG
+    - NRG
+    - EQIX
+    - DLR
+  macro:
+    - SPY
+    - QQQ
+    - TLT
+    - GLD
+    - UUP
+    - HYG
+    - LQD
+  commodities:
+    - "CL=F"   # WTI Crude
+    - "BZ=F"   # Brent Crude
+    - "GC=F"   # Gold Futures
+    - "NG=F"   # Natural Gas
+  volatility:
+    - "^VIX"
+
+options_positions:
+  - name: "WTI Call Spread"
+    underlying: "CL=F"
+    type: call_spread
+    monitor: true
+  - name: "OXY Calls"
+    underlying: OXY
+    type: long_call
+    monitor: true
+
+private_positions:
+  - name: "Anduril (via LDL Fund)"
+    thesis: defense_tech
+    last_known_valuation: 60000000000
+    notes: "$20B Army contract; reported $60B valuation round"
+  - name: "CIO Capital Partners I"
+    thesis: platform_access
+    commitment: 1000000
+    notes: "Chilean FoF, co-investment rights via side letter"
